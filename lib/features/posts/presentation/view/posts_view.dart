@@ -1,4 +1,6 @@
 import 'package:task_app/core/common/exports.dart';
+import 'package:task_app/core/utils/extensions/title_case_extension.dart';
+import 'package:task_app/features/posts/presentation/widget/post_popup_view.dart';
 
 class PostsView extends StatefulWidget {
   const PostsView({super.key});
@@ -11,8 +13,8 @@ class _PostsViewState extends State<PostsView> {
   late PostsCubit _postsCubit;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     _postsCubit = BlocProvider.of<PostsCubit>(context);
     _postsCubit.getAllPosts(
       onError: (message) {
@@ -50,37 +52,9 @@ class _PostsViewState extends State<PostsView> {
                         itemCount: posts.length,
                         itemBuilder: (context, index) {
                           final post = posts[index];
-                          return ListTile(
-                            title: Text(
-                              post.title ?? '',
-                              style: AllTextStyle.f16W6,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            subtitle: Text(
-                              post.body ?? '',
-                              style: AllTextStyle.f14W4,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            onTap: () {
-                              _postsCubit.getSinglePost(
-                                id: post.id ?? 0,
-                                onError: (message) {
-                                  kShowSnackBar(
-                                    message: message,
-                                    context: context,
-                                    isError: true,
-                                  );
-                                },
-                                navigation: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.postDetailPageRoute,
-                                  );
-                                },
-                              );
-                            },
+                          return PostItemWidgets(
+                            post: post,
+                            postsCubit: _postsCubit,
                           );
                         },
                       ),
@@ -93,6 +67,68 @@ class _PostsViewState extends State<PostsView> {
             ],
           ),
         );
+      },
+    );
+  }
+}
+
+class PostItemWidgets extends StatelessWidget {
+  const PostItemWidgets({
+    super.key,
+    required this.post,
+    required PostsCubit postsCubit,
+  }) : _postsCubit = postsCubit;
+
+  final PostsEntity post;
+  final PostsCubit _postsCubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        post.title ?? '',
+        style: AllTextStyle.f16W6,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        post.body ?? '',
+        style: AllTextStyle.f14W4,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+      onLongPress: () {
+        // Show a popup view
+        _postPopupView(context);
+      },
+      onTap: () {
+        _postsCubit.getSinglePost(
+          id: post.id ?? 0,
+          onError: (message) {
+            kShowSnackBar(
+              message: message,
+              context: context,
+              isError: true,
+            );
+          },
+          navigation: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.postDetailPageRoute,
+            );
+          },
+        );
+      },
+    );
+  }
+
+  _postPopupView(
+    BuildContext context,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return PostPopUpView();
       },
     );
   }

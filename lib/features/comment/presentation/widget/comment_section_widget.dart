@@ -4,7 +4,12 @@ import 'package:task_app/core/common/exports.dart';
 import 'package:task_app/core/utils/extensions/title_case_extension.dart';
 
 class CommentSectionWidget extends StatefulWidget {
-  const CommentSectionWidget({super.key});
+  const CommentSectionWidget({
+    super.key,
+    this.showTitle = true,
+  });
+
+  final bool? showTitle;
 
   @override
   State<CommentSectionWidget> createState() => _CommentSectionWidgetState();
@@ -36,13 +41,15 @@ class _CommentSectionWidgetState extends State<CommentSectionWidget> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Comments",
-              style: AllTextStyle.f16W8,
-            ),
-            SizedBox(
-              height: 12.h,
-            ),
+            if (widget.showTitle == true)
+              Text(
+                "Comments",
+                style: AllTextStyle.f16W8,
+              ),
+            if (widget.showTitle == true)
+              SizedBox(
+                height: 12.h,
+              ),
             SizedBox(
               height: 550.h,
               child: RefreshIndicator(
