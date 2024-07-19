@@ -1,5 +1,4 @@
 import 'package:task_app/core/common/exports.dart';
-import 'package:task_app/features/posts/presentation/view/pages/post_detail_page.dart';
 
 class AppRoutes {
   // Initial Route

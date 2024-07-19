@@ -1,5 +1,4 @@
 import 'package:task_app/core/common/exports.dart';
-import 'package:task_app/features/posts/domain/usecase/get_single_posts_usecase.dart';
 
 class PostsDI {
   void register() {

@@ -1,8 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:task_app/core/common/exports.dart';
 
 class PostsState {
