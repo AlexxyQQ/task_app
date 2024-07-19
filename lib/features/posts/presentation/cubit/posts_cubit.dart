@@ -20,7 +20,7 @@ class PostsCubit extends Cubit<PostsState> {
       state.copyWith(
         isLoading: true,
         isSuccess: false,
-        error: null,
+        error: () => null,
       ),
     );
 
@@ -70,7 +70,7 @@ class PostsCubit extends Cubit<PostsState> {
       state.copyWith(
         isLoading: true,
         isSuccess: false,
-        error: null,
+        error: () => null,
       ),
     );
 

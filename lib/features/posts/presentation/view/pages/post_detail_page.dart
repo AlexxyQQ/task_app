@@ -1,4 +1,5 @@
 import 'package:task_app/core/common/exports.dart';
+import 'package:task_app/features/comment/presentation/widget/comment_section_widget.dart';
 
 class PostDetailPage extends StatefulWidget {
   const PostDetailPage({super.key});
@@ -8,6 +9,21 @@ class PostDetailPage extends StatefulWidget {
 }
 
 class _PostDetailPageState extends State<PostDetailPage> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<CommentCubit>(context).getAllComments(
+      postId: BlocProvider.of<PostsCubit>(context).state.selectedPost?.id ?? 0,
+      onError: (message) {
+        kShowSnackBar(
+          message: message,
+          context: context,
+          isError: true,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostsCubit, PostsState>(
@@ -49,6 +65,10 @@ class _PostDetailPageState extends State<PostDetailPage> {
                   state.selectedPost?.body ?? 'N/A',
                   style: AllTextStyle.f14W4,
                 ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                CommentSectionWidget(),
               ],
             ),
           ),

@@ -15,4 +15,6 @@ class ApiEndpoints {
   static const String exampleURL = "/example";
   // Posts
   static const String postURL = "/posts";
+
+  
 }

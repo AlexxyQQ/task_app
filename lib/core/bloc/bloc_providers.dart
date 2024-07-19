@@ -8,5 +8,8 @@ class BlocProvidersList {
     BlocProvider<PostsCubit>(
       create: (context) => locator<PostsCubit>(),
     ),
+    BlocProvider<CommentCubit>(
+      create: (context) => locator<CommentCubit>(),
+    ),
   ];
 }
