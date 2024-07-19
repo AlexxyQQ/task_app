@@ -11,5 +11,8 @@ class BlocProvidersList {
     BlocProvider<CommentCubit>(
       create: (context) => locator<CommentCubit>(),
     ),
+    BlocProvider<UserCubit>(
+      create: (context) => locator<UserCubit>(),
+    ),
   ];
 }

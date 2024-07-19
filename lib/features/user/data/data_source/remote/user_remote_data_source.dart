@@ -1,20 +1,22 @@
 import 'package:task_app/core/common/exports.dart';
 import 'package:dartz/dartz.dart';
 
-class PostsRemoteDataSource {
+class UserRemoteDataSource {
   final Api api;
 
-  PostsRemoteDataSource({required this.api});
+  UserRemoteDataSource({required this.api});
 
-  Future<Either<AppErrorHandler, List<PostModel>>> getAllPosts() async {
+  Future<Either<AppErrorHandler, List<UserModel>>> getAllUsers() async {
     try {
-      final response = await api.sendRequest.get(ApiEndpoints.postURL);
+      final response = await api.sendRequest.get(
+        ApiEndpoints.userURL,
+      );
 
       if (response.statusCode == 200) {
         return Right(
           (response.data as List)
               .map(
-                (e) => PostModel.fromMap(e),
+                (e) => UserModel.fromMap(e),
               )
               .toList(),
         );
@@ -38,15 +40,17 @@ class PostsRemoteDataSource {
     }
   }
 
-  Future<Either<AppErrorHandler, PostModel>> getSinglePosts({
+  Future<Either<AppErrorHandler, UserModel>> getSingleUser({
     required int id,
   }) async {
     try {
-      final response = await api.sendRequest.get("${ApiEndpoints.postURL}/$id");
+      final response = await api.sendRequest.get(
+        "${ApiEndpoints.userURL}/$id",
+      );
 
       if (response.statusCode == 200) {
         return Right(
-          PostModel.fromMap(response.data),
+          UserModel.fromMap(response.data),
         );
       } else {
         return Left(

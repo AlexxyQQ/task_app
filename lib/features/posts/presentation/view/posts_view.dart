@@ -1,6 +1,4 @@
 import 'package:task_app/core/common/exports.dart';
-import 'package:task_app/core/utils/extensions/title_case_extension.dart';
-import 'package:task_app/features/posts/presentation/widget/post_popup_view.dart';
 
 class PostsView extends StatefulWidget {
   const PostsView({super.key});
@@ -37,8 +35,9 @@ class _PostsViewState extends State<PostsView> {
             children: [
               Builder(
                 builder: (context) {
-                  final List<PostsEntity> posts =
-                      state.isSearching ? state.filteredPosts : state.allPosts;
+                  final List<PostWithUserEntity> posts = state.isSearching
+                      ? state.filteredPostsWithUser
+                      : state.allPostsWithUser;
                   if (posts.isEmpty && !state.isLoading) {
                     return const Center(
                       child: Text('No posts found'),
@@ -53,7 +52,7 @@ class _PostsViewState extends State<PostsView> {
                         itemBuilder: (context, index) {
                           final post = posts[index];
                           return PostItemWidgets(
-                            post: post,
+                            postWithUser: post,
                             postsCubit: _postsCubit,
                           );
                         },
@@ -75,24 +74,24 @@ class _PostsViewState extends State<PostsView> {
 class PostItemWidgets extends StatelessWidget {
   const PostItemWidgets({
     super.key,
-    required this.post,
+    required this.postWithUser,
     required PostsCubit postsCubit,
   }) : _postsCubit = postsCubit;
 
-  final PostsEntity post;
+  final PostWithUserEntity postWithUser;
   final PostsCubit _postsCubit;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
-        post.title ?? '',
+        postWithUser.post?.title ?? '',
         style: AllTextStyle.f16W6,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
-        post.body ?? '',
+        postWithUser.post?.body ?? '',
         style: AllTextStyle.f14W4,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
@@ -103,7 +102,7 @@ class PostItemWidgets extends StatelessWidget {
       },
       onTap: () {
         _postsCubit.getSinglePost(
-          id: post.id ?? 0,
+          id: postWithUser.post?.id ?? 0,
           onError: (message) {
             kShowSnackBar(
               message: message,
@@ -128,7 +127,7 @@ class PostItemWidgets extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (context) {
-        return PostPopUpView();
+        return const PostPopUpView();
       },
     );
   }

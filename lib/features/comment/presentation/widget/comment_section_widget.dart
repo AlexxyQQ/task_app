@@ -1,7 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:task_app/core/common/exports.dart';
-import 'package:task_app/core/utils/extensions/title_case_extension.dart';
 
 class CommentSectionWidget extends StatefulWidget {
   const CommentSectionWidget({

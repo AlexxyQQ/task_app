@@ -23,7 +23,7 @@ class PostsAppBar extends StatelessWidget implements PreferredSizeWidget {
                   // Back Button
                   CupertinoButton(
                     onPressed: () {
-                      BlocProvider.of<PostsCubit>(context).searchToggle(
+                      BlocProvider.of<PostsCubit>(context).toggleSearch(
                         false,
                       );
                     },
@@ -81,7 +81,7 @@ class PostsAppBar extends StatelessWidget implements PreferredSizeWidget {
             actions: [
               CupertinoButton(
                 onPressed: () {
-                  BlocProvider.of<PostsCubit>(context).searchToggle(
+                  BlocProvider.of<PostsCubit>(context).toggleSearch(
                     true,
                   );
                 },

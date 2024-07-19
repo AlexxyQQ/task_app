@@ -1,5 +1,4 @@
 import 'package:task_app/core/common/exports.dart';
-import 'package:task_app/features/comment/presentation/widget/comment_section_widget.dart';
 
 class PostDetailPage extends StatefulWidget {
   const PostDetailPage({super.key});
@@ -68,7 +67,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                 SizedBox(
                   height: 20.h,
                 ),
-                CommentSectionWidget(),
+                const CommentSectionWidget(),
               ],
             ),
           ),

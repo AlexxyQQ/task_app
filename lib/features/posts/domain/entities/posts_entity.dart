@@ -1,23 +1,25 @@
 import 'package:task_app/core/common/exports.dart';
 
-class PostsEntity {
+
+
+class PostEntity {
   final int? userId;
   final int? id;
   final String? title;
   final String? body;
-  PostsEntity({
+  PostEntity({
     this.userId,
     this.id,
     this.title,
     this.body,
   });
-  PostsEntity copyWith({
+  PostEntity copyWith({
     ValueGetter<int?>? userId,
     ValueGetter<int?>? id,
     ValueGetter<String?>? title,
     ValueGetter<String?>? body,
   }) {
-    return PostsEntity(
+    return PostEntity(
       userId: userId != null ? userId() : this.userId,
       id: id != null ? id() : this.id,
       title: title != null ? title() : this.title,
@@ -27,22 +29,22 @@ class PostsEntity {
 
   @override
   String toString() {
-    return 'PostsEntity {"userId": $userId, "id": $id, "title": $title, "body": $body, }';
+    return 'PostsEntity(userId: $userId, id: $id, title: $title, body: $body,)';
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'user_id': userId,
+      'userId': userId,
       'id': id,
       'title': title,
       'body': body,
     };
   }
 
-  factory PostsEntity.fromMap(Map<String, dynamic> map) {
-    return PostsEntity(
-      userId: map['user_id'] != null ? int.parse("${map['user_id']}") : null,
-      id: map['id'] != null ? int.parse("${map['id']}") : null,
+  factory PostEntity.fromMap(Map<String, dynamic> map) {
+    return PostEntity(
+      userId: map['userId']?.toInt(),
+      id: map['id']?.toInt(),
       title: map['title'],
       body: map['body'],
     );
@@ -50,16 +52,18 @@ class PostsEntity {
 
   String toJson() => json.encode(toMap());
 
-  factory PostsEntity.fromJson(String source) =>
-      PostsEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory PostEntity.fromJson(String source) =>
+      PostEntity.fromMap(json.decode(source));
 
   @override
-  bool operator ==(covariant PostsEntity other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return userId == other.userId &&
-        id == other.id &&
-        title == other.title &&
-        body == other.body;
+
+    return other is PostEntity &&
+        other.userId == userId &&
+        other.id == id &&
+        other.title == title &&
+        other.body == body;
   }
 
   @override

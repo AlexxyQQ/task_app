@@ -9,12 +9,12 @@ class PostsRepositoryImpl implements IPostsRepository {
   });
 
   @override
-  Future<Either<AppErrorHandler, List<PostsModel>>> getAllPosts() async {
+  Future<Either<AppErrorHandler, List<PostModel>>> getAllPosts() async {
     return await remoteDataSource.getAllPosts();
   }
 
   @override
-  Future<Either<AppErrorHandler, PostsModel>> getSinglePosts(
+  Future<Either<AppErrorHandler, PostModel>> getSinglePosts(
       {required int id}) async {
     return await remoteDataSource.getSinglePosts(id: id);
   }

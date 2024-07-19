@@ -1,9 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:task_app/core/common/custom_widgets/custom_bottom_sheet.dart';
 import 'package:task_app/core/common/exports.dart';
-import 'package:task_app/core/utils/extensions/title_case_extension.dart';
-import 'package:task_app/features/comment/presentation/widget/comment_section_widget.dart';
 
 class PostPopUpView extends StatefulWidget {
   const PostPopUpView({super.key});

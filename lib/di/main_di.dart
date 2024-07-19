@@ -18,5 +18,6 @@ class MainDI {
     // Feature Containers
     PostsDI().register();
     CommentDI().register();
+    UserDI().register();
   }
 }
