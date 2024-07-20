@@ -35,10 +35,11 @@ class _PostsViewState extends State<PostsView> {
             children: [
               Builder(
                 builder: (context) {
-                  final List<PostWithUserEntity> posts = state.isSearching
-                      ? state.filteredPostsWithUser
-                      : state.allPostsWithUser;
-                  if (posts.isEmpty && !state.isLoading) {
+                  final List<PostWithUserEntity> postWithUser =
+                      state.isSearching
+                          ? state.filteredPostsWithUser
+                          : state.allPostsWithUser;
+                  if (postWithUser.isEmpty && !state.isLoading) {
                     return const Center(
                       child: Text('No posts found'),
                     );
@@ -47,10 +48,18 @@ class _PostsViewState extends State<PostsView> {
                       onRefresh: () async {
                         _postsCubit.getAllPosts();
                       },
-                      child: ListView.builder(
-                        itemCount: posts.length,
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 20.w,
+                          ),
+                          child: const Divider(
+                            color: PrimitiveColors.grey700,
+                          ),
+                        ),
+                        itemCount: postWithUser.length,
                         itemBuilder: (context, index) {
-                          final post = posts[index];
+                          final post = postWithUser[index];
                           return PostItemWidgets(
                             postWithUser: post,
                             postsCubit: _postsCubit,
@@ -66,68 +75,6 @@ class _PostsViewState extends State<PostsView> {
             ],
           ),
         );
-      },
-    );
-  }
-}
-
-class PostItemWidgets extends StatelessWidget {
-  const PostItemWidgets({
-    super.key,
-    required this.postWithUser,
-    required PostsCubit postsCubit,
-  }) : _postsCubit = postsCubit;
-
-  final PostWithUserEntity postWithUser;
-  final PostsCubit _postsCubit;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        postWithUser.post?.title ?? '',
-        style: AllTextStyle.f16W6,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: Text(
-        postWithUser.post?.body ?? '',
-        style: AllTextStyle.f14W4,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
-      onLongPress: () {
-        // Show a popup view
-        _postPopupView(context);
-      },
-      onTap: () {
-        _postsCubit.getSinglePost(
-          id: postWithUser.post?.id ?? 0,
-          onError: (message) {
-            kShowSnackBar(
-              message: message,
-              context: context,
-              isError: true,
-            );
-          },
-          navigation: () {
-            Navigator.pushNamed(
-              context,
-              AppRoutes.postDetailPageRoute,
-            );
-          },
-        );
-      },
-    );
-  }
-
-  _postPopupView(
-    BuildContext context,
-  ) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return const PostPopUpView();
       },
     );
   }

@@ -78,6 +78,7 @@ export 'package:task_app/features/posts/presentation/cubit/posts_state.dart';
 export 'package:task_app/features/posts/presentation/view/pages/post_detail_page.dart';
 export 'package:task_app/features/posts/presentation/view/posts_view.dart';
 export 'package:task_app/features/posts/presentation/widget/post_app_bar.dart';
+export 'package:task_app/features/posts/presentation/widget/post_item_widget.dart';
 export 'package:task_app/features/posts/presentation/widget/post_popup_view.dart';
 export 'package:task_app/features/splash/data/data_source/remote/splash_remote_data_source.dart';
 export 'package:task_app/features/splash/data/models/splash_model.dart';

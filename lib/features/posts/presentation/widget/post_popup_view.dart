@@ -1,4 +1,5 @@
 import 'package:task_app/core/common/exports.dart';
+import 'package:task_app/features/comment/presentation/widget/comment_bottom_sheet.dart';
 
 class PostPopUpView extends StatefulWidget {
   const PostPopUpView({super.key});
@@ -12,7 +13,7 @@ class _PostPopUpViewState extends State<PostPopUpView> {
   Widget build(BuildContext context) {
     return BlocBuilder<PostsCubit, PostsState>(
       builder: (context, state) {
-        if (state.selectedPost == null) {
+        if (state.selectedPostWithUser == null) {
           return const SizedBox.shrink();
         }
         return AlertDialog(
@@ -25,7 +26,7 @@ class _PostPopUpViewState extends State<PostPopUpView> {
             borderRadius: BorderRadius.circular(12.r),
           ),
           content: SizedBox(
-            height: 300.w,
+            height: 350.w,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,10 +65,10 @@ class _PostPopUpViewState extends State<PostPopUpView> {
             icon: const Icon(
               Icons.favorite,
               color: Colors.red,
-              // state.selectedPost!.isFavourite
+              // state.selectedPostWithUser!.post?.isFavourite
               //     ? Icons.favorite
               //     : Icons.favorite_border,
-              // color: state.selectedPost!.isFavourite
+              // color: state.selectedPostWithUser!.post?.isFavourite
               //     ? PrimitiveColors.red
               //     : PrimitiveColors.grey400,
             ),
@@ -79,19 +80,13 @@ class _PostPopUpViewState extends State<PostPopUpView> {
               BlocProvider.of<CommentCubit>(context).getAllComments(
                 postId: BlocProvider.of<PostsCubit>(context)
                         .state
-                        .selectedPost
+                        .selectedPostWithUser!
+                        .post
                         ?.id ??
                     0,
                 onSuccess: () {
                   Navigator.of(context).pop();
-                  kBottomSheet(
-                    context: context,
-                    title: 'Comments',
-                    height: 0.7.sh,
-                    child: const CommentSectionWidget(
-                      showTitle: false,
-                    ),
-                  );
+                  commentBottomSheet(context);
                 },
               );
             },
@@ -122,10 +117,37 @@ class _PostPopUpViewState extends State<PostPopUpView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-          child: Text(
-            state.selectedPost!.title!.toTitleCase(),
-            style: AllTextStyle.f16W8,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          child: Row(
+            children: [
+              Container(
+                width: 32.w,
+                height: 32.h,
+                decoration: BoxDecoration(
+                  color: PrimitiveColors.secondary300,
+                  borderRadius: BorderRadius.circular(25.r),
+                ),
+                child: Center(
+                  child: Text(
+                    state.selectedPostWithUser!.user?.username
+                            ?.substring(0, 1)
+                            .toTitleCase(nullValue: "U") ??
+                        'U',
+                    style: AllTextStyle.f14W8.copyWith(
+                      color: PrimitiveColors.grey1000,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 12.w,
+              ),
+              Text(
+                state.selectedPostWithUser!.user?.username?.toTitleCase() ??
+                    'N/A',
+                style: AllTextStyle.f14W8,
+              ),
+            ],
           ),
         ),
         // Divider
@@ -134,17 +156,32 @@ class _PostPopUpViewState extends State<PostPopUpView> {
           thickness: 0.5.h,
         ),
         SizedBox(
-          height: 12.h,
+          height: 8.h,
         ),
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: 16.w,
           ),
-          child: Text(
-            state.selectedPost!.body ?? 'N/A',
-            style: AllTextStyle.f14W5.copyWith(
-              color: PrimitiveColors.grey400,
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                state.selectedPostWithUser!.post?.title.toTitleCase(
+                      nullValue: 'N/A',
+                    ) ??
+                    'N/A',
+                style: AllTextStyle.f16W8,
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              Text(
+                state.selectedPostWithUser!.post?.body ?? 'N/A',
+                style: AllTextStyle.f14W5.copyWith(
+                  color: PrimitiveColors.grey400,
+                ),
+              ),
+            ],
           ),
         ),
       ],

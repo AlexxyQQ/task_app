@@ -4,9 +4,11 @@ class CommentSectionWidget extends StatefulWidget {
   const CommentSectionWidget({
     super.key,
     this.showTitle = true,
+    this.height = 550,
   });
 
   final bool? showTitle;
+  final double height;
 
   @override
   State<CommentSectionWidget> createState() => _CommentSectionWidgetState();
@@ -48,13 +50,14 @@ class _CommentSectionWidgetState extends State<CommentSectionWidget> {
                 height: 12.h,
               ),
             SizedBox(
-              height: 550.h,
+              height: widget.height,
               child: RefreshIndicator(
                 onRefresh: () async {
                   BlocProvider.of<CommentCubit>(context).getAllComments(
                     postId: BlocProvider.of<PostsCubit>(context)
                             .state
-                            .selectedPost
+                            .selectedPostWithUser
+                            ?.post
                             ?.id ??
                         0,
                     onError: (message) {
@@ -138,7 +141,7 @@ class CommentItemWidget extends StatelessWidget {
           ),
 
           SizedBox(
-            width: 320.w,
+            width: 0.75.sw,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

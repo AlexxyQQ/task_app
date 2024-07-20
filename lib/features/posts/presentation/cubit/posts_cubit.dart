@@ -1,7 +1,6 @@
 import 'package:task_app/core/common/exports.dart';
 import 'dart:developer';
 
-
 class PostsCubit extends Cubit<PostsState> {
   PostsCubit({
     required this.getAllPostUsecase,
@@ -43,14 +42,6 @@ class PostsCubit extends Cubit<PostsState> {
         }
       },
       (data) {
-        emit(
-          state.copyWith(
-            isLoading: false,
-            isSuccess: true,
-            allPosts: data,
-          ),
-        );
-
         _getAllPostWithUser(posts: data).then((value) {
           emit(
             state.copyWith(
@@ -103,14 +94,6 @@ class PostsCubit extends Cubit<PostsState> {
         }
       },
       (data) {
-        emit(
-          state.copyWith(
-            isLoading: false,
-            isSuccess: true,
-            selectedPost: () => data,
-          ),
-        );
-
         _getSinglePostWithUser(post: data).then((value) {
           emit(
             state.copyWith(
@@ -138,7 +121,7 @@ class PostsCubit extends Cubit<PostsState> {
     emit(
       state.copyWith(
         isSearching: value,
-        filteredPosts: value ? state.allPosts : const [],
+        filteredPostsWithUser: value ? state.allPostsWithUser : const [],
       ),
     );
   }
@@ -146,7 +129,7 @@ class PostsCubit extends Cubit<PostsState> {
   void filterPosts({
     required String query,
   }) {
-    final filteredPosts = state.allPostsWithUser.where((postWithUser) {
+    final filteredPostsWithUser = state.allPostsWithUser.where((postWithUser) {
       return postWithUser.post?.title?.toLowerCase().contains(
                     query.toLowerCase(),
                   ) ==
@@ -166,7 +149,7 @@ class PostsCubit extends Cubit<PostsState> {
     }).toList();
     emit(
       state.copyWith(
-        filteredPostsWithUser: filteredPosts,
+        filteredPostsWithUser: filteredPostsWithUser,
       ),
     );
   }
@@ -174,29 +157,22 @@ class PostsCubit extends Cubit<PostsState> {
   void clearSearch() {
     emit(
       state.copyWith(
-        filteredPosts: const [],
+        filteredPostsWithUser: const [],
         isSearching: false,
         searchController: TextEditingController(),
       ),
     );
   }
 
-  // Future<PostWithUserEntity> _getSinglePostWithUser({
-  //   required PostEntity post,
-  // }) async {
-  //   final userData =
-  //       await locator<GetSingleUserUsecase>().call(post.userId ?? 0);
-  //   return userData.fold(
-  //     (error) => PostWithUserEntity(
-  //       post: post,
-  //       user: null,
-  //     ),
-  //     (data) => PostWithUserEntity(
-  //       post: post,
-  //       user: data,
-  //     ),
-  //   );
-  // }
+  void selectPostWithUser({
+    required PostWithUserEntity postWithUser,
+  }) {
+    emit(
+      state.copyWith(
+        selectedPostWithUser: () => postWithUser,
+      ),
+    );
+  }
 
   final Map<int, UserEntity> _userCache = {};
   Future<PostWithUserEntity> _getSinglePostWithUser({
