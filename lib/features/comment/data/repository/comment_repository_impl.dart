@@ -13,4 +13,18 @@ class CommentRepositoryImpl implements ICommentRepository {
       {required int postId}) async {
     return await remoteDataSource.getAllComments(postId: postId);
   }
+
+  @override
+  Future<Either<AppErrorHandler, CommentModel>> addComment(
+      {required int postId,
+      required String name,
+      required String email,
+      required String body}) async {
+    return await remoteDataSource.addComment(
+      postId: postId,
+      name: name,
+      email: email,
+      body: body,
+    );
+  }
 }

@@ -11,6 +11,13 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<PostsCubit>(context).getAllPosts(onError: (error) {
+      kShowSnackBar(
+        context: context,
+        message: error,
+        isError: true,
+      );
+    });
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, AppRoutes.allPostPageRoute);
     });

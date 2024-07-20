@@ -5,7 +5,7 @@ class AppRoutes {
   static const String initialRoute = '/';
   static const String unknownRoute = '/unknown';
 
-  // Example Routes
+  // Post Routes
   static const String allPostPageRoute = '/allPostPage';
   static const String postDetailPageRoute = '/postDetailPageRoute';
 

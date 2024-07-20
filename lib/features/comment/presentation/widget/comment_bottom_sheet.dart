@@ -1,6 +1,10 @@
 import 'package:task_app/core/common/exports.dart';
 
-commentBottomSheet(BuildContext context) {
+commentBottomSheet(
+  BuildContext context,
+  int postId,
+) {
+  final TextEditingController commentController = TextEditingController();
   return showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -27,12 +31,13 @@ commentBottomSheet(BuildContext context) {
                       CommentSectionWidget(
                         showTitle: false,
                         height: 0.78.sh,
+                        postId: postId,
                       ),
                     ],
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 1,
                 thickness: 1,
               ),
@@ -46,6 +51,7 @@ commentBottomSheet(BuildContext context) {
                   children: [
                     Expanded(
                       child: TextField(
+                        controller: commentController,
                         decoration: InputDecoration(
                           hintText: 'Write a comment...',
                           hintStyle: AllTextStyle.f14W4.copyWith(
@@ -56,7 +62,32 @@ commentBottomSheet(BuildContext context) {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (commentController.text.isEmpty) {
+                          return;
+                        }
+                        await BlocProvider.of<CommentCubit>(context)
+                            .postComment(
+                          postId: postId,
+                          name: 'John Doe',
+                          email: "JohjDoe@example.com",
+                          body: commentController.text,
+                          onSuccess: () {
+                            commentController.clear();
+                            kShowSnackBar(
+                              message: 'Comment posted successfully',
+                              context: context,
+                            );
+                          },
+                          onError: (message) {
+                            kShowSnackBar(
+                              message: message,
+                              context: context,
+                              isError: true,
+                            );
+                          },
+                        );
+                      },
                       icon: const Icon(
                         Icons.send,
                         color: PrimitiveColors.grey700,

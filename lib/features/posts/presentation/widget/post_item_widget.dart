@@ -1,8 +1,5 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
 import 'package:task_app/core/common/exports.dart';
-import 'package:task_app/features/comment/presentation/widget/comment_bottom_sheet.dart';
+import 'dart:developer';
 
 class PostItemWidgets extends StatelessWidget {
   const PostItemWidgets({
@@ -70,7 +67,10 @@ class PostItemWidgets extends StatelessWidget {
             BlocProvider.of<CommentCubit>(context).getAllComments(
               postId: postWithUser.post?.id ?? 0,
               onSuccess: () {
-                commentBottomSheet(context);
+                commentBottomSheet(
+                  context,
+                  postWithUser.post?.id ?? 0,
+                );
               },
             );
           },
@@ -155,7 +155,7 @@ class PostItemWidgets extends StatelessWidget {
           width: 32.w,
           height: 32.h,
           decoration: BoxDecoration(
-            color: PrimitiveColors.secondary300,
+            color: AppColors(inverseDarkMode: true).primaryContainer,
             borderRadius: BorderRadius.circular(25.r),
           ),
           child: Center(

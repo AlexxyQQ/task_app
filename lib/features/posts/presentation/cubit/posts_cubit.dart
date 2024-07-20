@@ -95,6 +95,8 @@ class PostsCubit extends Cubit<PostsState> {
       },
       (data) {
         _getSinglePostWithUser(post: data).then((value) {
+          // If user is already in the cache, return it
+
           emit(
             state.copyWith(
               isLoading: false,
@@ -179,13 +181,15 @@ class PostsCubit extends Cubit<PostsState> {
     required PostEntity post,
   }) async {
     if (post.userId == null) {
+      log(
+        "Fetching user data for post with id: ",
+      );
       return PostWithUserEntity(
         post: post,
         user: null,
       );
     }
     if (_userCache.containsKey(post.userId)) {
-      // If user is already in the cache, return it
       return PostWithUserEntity(
         post: post,
         user: _userCache[post.userId],

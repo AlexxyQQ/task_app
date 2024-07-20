@@ -12,7 +12,12 @@ class _PostDetailPageState extends State<PostDetailPage> {
   void initState() {
     super.initState();
     BlocProvider.of<CommentCubit>(context).getAllComments(
-      postId: BlocProvider.of<PostsCubit>(context).state.selectedPost?.id ?? 0,
+      postId: BlocProvider.of<PostsCubit>(context)
+              .state
+              .selectedPostWithUser
+              ?.post
+              ?.id ??
+          0,
       onError: (message) {
         kShowSnackBar(
           message: message,
@@ -27,7 +32,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<PostsCubit, PostsState>(
       builder: (context, state) {
-        if (state.selectedPost == null) {
+        if (state.selectedPostWithUser == null) {
           return const Scaffold(
             appBar: CustomAppBar(
               title: 'Post Detail',
@@ -53,7 +58,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
               children: [
                 // Title of the Post
                 Text(
-                  state.selectedPost?.title ?? 'N/A',
+                  state.selectedPostWithUser?.post?.title ?? 'N/A',
                   style: AllTextStyle.f16W6,
                 ),
                 SizedBox(
@@ -61,13 +66,16 @@ class _PostDetailPageState extends State<PostDetailPage> {
                 ),
                 // Body of the Post
                 Text(
-                  state.selectedPost?.body ?? 'N/A',
+                  state.selectedPostWithUser?.post?.body ?? 'N/A',
                   style: AllTextStyle.f14W4,
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                const CommentSectionWidget(),
+                CommentSectionWidget(
+                  postId: state.selectedPostWithUser?.post?.id ?? 0,
+                  height: 0.54.sh,
+                ),
               ],
             ),
           ),

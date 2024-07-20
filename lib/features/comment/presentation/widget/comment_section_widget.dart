@@ -4,11 +4,13 @@ class CommentSectionWidget extends StatefulWidget {
   const CommentSectionWidget({
     super.key,
     this.showTitle = true,
-    this.height = 550,
+    this.height = 540,
+    required this.postId,
   });
 
   final bool? showTitle;
   final double height;
+  final int postId;
 
   @override
   State<CommentSectionWidget> createState() => _CommentSectionWidgetState();
@@ -42,7 +44,7 @@ class _CommentSectionWidgetState extends State<CommentSectionWidget> {
           children: [
             if (widget.showTitle == true)
               Text(
-                "Comments",
+                "Comments (${state.comments.length})",
                 style: AllTextStyle.f16W8,
               ),
             if (widget.showTitle == true)
@@ -54,12 +56,7 @@ class _CommentSectionWidgetState extends State<CommentSectionWidget> {
               child: RefreshIndicator(
                 onRefresh: () async {
                   BlocProvider.of<CommentCubit>(context).getAllComments(
-                    postId: BlocProvider.of<PostsCubit>(context)
-                            .state
-                            .selectedPostWithUser
-                            ?.post
-                            ?.id ??
-                        0,
+                    postId: widget.postId,
                     onError: (message) {
                       kShowSnackBar(
                         message: message,
@@ -122,7 +119,7 @@ class CommentItemWidget extends StatelessWidget {
             width: 50.w,
             height: 50.h,
             decoration: BoxDecoration(
-              color: PrimitiveColors.secondary300,
+              color: AppColors(inverseDarkMode: true).primaryContainer,
               borderRadius: BorderRadius.circular(25.r),
             ),
             child: Center(
@@ -140,8 +137,8 @@ class CommentItemWidget extends StatelessWidget {
             width: 12.w,
           ),
 
-          SizedBox(
-            width: 0.75.sw,
+          // Expanded Column to avoid overflow
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

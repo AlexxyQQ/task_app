@@ -21,10 +21,16 @@ class CommentDI {
         repository: locator(),
       ),
     );
+    locator.registerFactory(
+      () => PostCommentUsecase(
+        repository: locator(),
+      ),
+    );
     // Cubit
     locator.registerLazySingleton(
       () => CommentCubit(
         getAllCommentsUsecase: locator(),
+        postCommentUsecase: locator(),
       ),
     );
   }

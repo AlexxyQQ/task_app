@@ -14,6 +14,7 @@ class MainDI {
         settingsHiveService: locator<SettingsHiveService>(),
       ),
     );
+    
 
     // Feature Containers
     PostsDI().register();
