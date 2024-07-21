@@ -26,11 +26,13 @@ class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('SplashView'),
-      ),
-      body: const Center(
-        child: Text('SplashView'),
+      body: Center(
+        child: Text(
+          'Task App',
+          style: AllTextStyle.f32W8.copyWith(
+            color: AppColors().primary,
+          ),
+        ),
       ),
     );
   }

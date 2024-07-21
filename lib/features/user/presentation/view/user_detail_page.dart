@@ -40,7 +40,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                           horizontal: 20.w,
                           vertical: 12.h,
                         ),
-                        child: _userDetails(userSate),
+                        child: _userDetails(userSate, albumState, photoState),
                       ),
                       SizedBox(
                         height: 20.h,
@@ -68,7 +68,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
     );
   }
 
-  _userDetails(UserState state) {
+  _userDetails(UserState state, AlbumState albumState, PhotoState photoState) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -101,7 +101,9 @@ class _UserDetailPageState extends State<UserDetailPage> {
             Column(
               children: [
                 Text(
-                  "50",
+                  albumState.isLoading
+                      ? "N/A"
+                      : albumState.userAlbums.length.toString(),
                   style: AllTextStyle.f18W6.copyWith(
                     color: PrimitiveColors.grey100,
                   ),
@@ -117,17 +119,19 @@ class _UserDetailPageState extends State<UserDetailPage> {
             SizedBox(
               width: 50.w,
             ),
-            // Todo Count
+            // Photo Count
             Column(
               children: [
                 Text(
-                  "50",
+                  photoState.isLoading
+                      ? "N/A"
+                      : photoState.userPhotos.length.toString(),
                   style: AllTextStyle.f18W6.copyWith(
                     color: PrimitiveColors.grey100,
                   ),
                 ),
                 Text(
-                  "Todos",
+                  "Photos",
                   style: AllTextStyle.f14W4.copyWith(
                     color: PrimitiveColors.grey300,
                   ),
