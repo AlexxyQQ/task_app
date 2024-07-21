@@ -14,11 +14,11 @@ class MainDI {
         settingsHiveService: locator<SettingsHiveService>(),
       ),
     );
-    
 
     // Feature Containers
     PostsDI().register();
     CommentDI().register();
     UserDI().register();
+    AlbumDI().register();
   }
 }
