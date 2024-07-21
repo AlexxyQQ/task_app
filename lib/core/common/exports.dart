@@ -60,7 +60,7 @@ export 'package:task_app/features/album/data/repository/album_repository_impl.da
 export 'package:task_app/features/album/di/album_di.dart';
 export 'package:task_app/features/album/domain/entities/album_entity.dart';
 export 'package:task_app/features/album/domain/repository/album_repository.dart';
-export 'package:task_app/features/album/domain/usecase/get_all_album_usecase.dart';
+export 'package:task_app/features/album/domain/usecase/get_all_album_of_user_usecase.dart';
 export 'package:task_app/features/album/presentation/cubit/album_cubit.dart';
 export 'package:task_app/features/album/presentation/cubit/album_state.dart';
 export 'package:task_app/features/album/presentation/view/album_view.dart';
@@ -76,6 +76,17 @@ export 'package:task_app/features/comment/presentation/cubit/comment_cubit.dart'
 export 'package:task_app/features/comment/presentation/cubit/comment_state.dart';
 export 'package:task_app/features/comment/presentation/widget/comment_bottom_sheet.dart';
 export 'package:task_app/features/comment/presentation/widget/comment_section_widget.dart';
+export 'package:task_app/features/photo/data/data_source/remote/photo_remote_data_source.dart';
+export 'package:task_app/features/photo/data/models/photo_model.dart';
+export 'package:task_app/features/photo/data/repository/photo_repository_impl.dart';
+export 'package:task_app/features/photo/di/photo_di.dart';
+export 'package:task_app/features/photo/domain/entities/photo_entity.dart';
+export 'package:task_app/features/photo/domain/entities/photo_entity.dart';
+export 'package:task_app/features/photo/domain/repository/photo_repository.dart';
+export 'package:task_app/features/photo/domain/usecase/get_all_photo_of_user_usecase.dart';
+export 'package:task_app/features/photo/presentation/cubit/photo_cubit.dart';
+export 'package:task_app/features/photo/presentation/cubit/photo_state.dart';
+export 'package:task_app/features/photo/presentation/view/photo_view.dart';
 export 'package:task_app/features/posts/data/data_source/remote/posts_remote_data_source.dart';
 export 'package:task_app/features/posts/data/models/posts_model.dart';
 export 'package:task_app/features/posts/data/repository/posts_repository_impl.dart';

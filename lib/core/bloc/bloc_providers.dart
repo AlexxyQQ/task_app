@@ -17,5 +17,8 @@ class BlocProvidersList {
     BlocProvider<AlbumCubit>(
       create: (context) => locator<AlbumCubit>(),
     ),
+    BlocProvider<PhotoCubit>(
+      create: (context) => locator<PhotoCubit>(),
+    ),
   ];
 }

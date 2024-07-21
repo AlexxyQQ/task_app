@@ -20,5 +20,6 @@ class MainDI {
     CommentDI().register();
     UserDI().register();
     AlbumDI().register();
+    PhotoDI().register();
   }
 }

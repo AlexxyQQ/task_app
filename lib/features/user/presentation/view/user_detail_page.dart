@@ -14,41 +14,53 @@ class _UserDetailPageState extends State<UserDetailPage> {
     final userId = BlocProvider.of<UserCubit>(context).state.selectedUser?.id;
     if (userId != null) {
       BlocProvider.of<AlbumCubit>(context).getAllAlbumOfUser(userId: userId);
+      BlocProvider.of<PhotoCubit>(context).getAllPhotosOfUser(userId: userId);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AlbumCubit, AlbumState>(
-      builder: (context, albumState) {
-        return BlocBuilder<UserCubit, UserState>(
-          builder: (context, userSate) {
-            return Scaffold(
-              appBar: CustomAppBar(
-                title: userSate.selectedUser?.username.toTitleCase(
-                      nullValue: 'N/A',
-                    ) ??
-                    '',
-              ),
-              body: Column(
-                children: [
-                  _userDetails(userSate),
-                  SizedBox(
-                    height: 20.h,
+    return BlocBuilder<PhotoCubit, PhotoState>(
+      builder: (context, photoState) {
+        return BlocBuilder<AlbumCubit, AlbumState>(
+          builder: (context, albumState) {
+            return BlocBuilder<UserCubit, UserState>(
+              builder: (context, userSate) {
+                return Scaffold(
+                  appBar: CustomAppBar(
+                    title: userSate.selectedUser?.username.toTitleCase(
+                          nullValue: 'N/A',
+                        ) ??
+                        '',
                   ),
-                  // Albums
-                  albumState.isLoading
-                      ? _loadingAlbumsSkeleton(
-                          albumState,
-                        )
-                      : _albums(albumState),
-                  SizedBox(
-                    height: 20.h,
+                  body: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 12.h,
+                        ),
+                        child: _userDetails(userSate),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      albumState.isLoading
+                          ? _loadingAlbumsSkeleton()
+                          : _albums(albumState),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      // Photos
+                      photoState.isLoading
+                          ? _loadingPhotosSkeleton()
+                          : _photos(
+                              photoState,
+                            ),
+                    ],
                   ),
-                  // Photos
-                  _photos(),
-                ],
-              ),
+                );
+              },
             );
           },
         );
@@ -205,7 +217,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
     );
   }
 
-  _loadingAlbumsSkeleton(AlbumState state) {
+  _loadingAlbumsSkeleton() {
     return SizedBox(
       height: 120.h,
       width: 1.sw,
@@ -245,7 +257,64 @@ class _UserDetailPageState extends State<UserDetailPage> {
     );
   }
 
-  _photos() {
+  _photos(PhotoState state) {
+    // Grid of photos
+    return Expanded(
+      // height: 0.5.sh,
+      // width: 1.sw,
+      child: RefreshIndicator(
+        onRefresh: () async {
+          final userId =
+              BlocProvider.of<UserCubit>(context).state.selectedUser?.id;
+          if (userId != null) {
+            BlocProvider.of<PhotoCubit>(context)
+                .getAllPhotosOfUser(userId: userId);
+          }
+        },
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 8.w,
+            mainAxisSpacing: 8.h,
+          ),
+          itemCount: state.userPhotos.length,
+          itemBuilder: (context, index) {
+            return Container(
+              width: 100.w,
+              height: 100.h,
+              decoration: BoxDecoration(
+                color: AppColors(inverseDarkMode: true).primaryContainer,
+              ),
+              child: Image.network(
+                state.userPhotos[index].url ?? '',
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                (loadingProgress.expectedTotalBytes ?? 1)
+                            : null,
+                      ),
+                    );
+                  }
+                },
+                errorBuilder: (BuildContext context, Object error,
+                    StackTrace? stackTrace) {
+                  return Icon(Icons.error);
+                },
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  _loadingPhotosSkeleton() {
     // Grid of photos
     return Expanded(
       // height: 0.5.sh,
@@ -256,22 +325,20 @@ class _UserDetailPageState extends State<UserDetailPage> {
           crossAxisSpacing: 8.w,
           mainAxisSpacing: 8.h,
         ),
-        itemCount: 80,
+        itemCount: 15,
         itemBuilder: (context, index) {
           return Container(
             width: 100.w,
             height: 100.h,
             decoration: BoxDecoration(
-              color: AppColors(inverseDarkMode: true).primaryContainer,
+              color: PrimitiveColors.grey800,
             ),
             child: Center(
-              child: Text(
-                "Photo $index",
-                style: AllTextStyle.f14W6.copyWith(
-                  color: PrimitiveColors.grey1000,
-                ),
-              ),
-            ),
+                child: Container(
+              width: 50.w,
+              height: 16.h,
+              color: PrimitiveColors.grey800,
+            )),
           );
         },
       ),
