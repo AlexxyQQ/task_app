@@ -40,8 +40,29 @@ class _PostsViewState extends State<PostsView> {
                           ? state.filteredPostsWithUser
                           : state.allPostsWithUser;
                   if (postWithUser.isEmpty && !state.isLoading) {
-                    return const Center(
-                      child: Text('No posts found'),
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Center(
+                          child: Text('No posts found'),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        KButton(
+                          onPressed: () {
+                            _postsCubit.getAllPosts();
+                          },
+                          label: 'Retry',
+                          fixedSize: Size(
+                            180.w,
+                            60.h,
+                          ),
+                          backgroundColor: AppColors().primary,
+                          foregroundColor: AppColors().onPrimary,
+                        ),
+                      ],
                     );
                   } else {
                     return RefreshIndicator(
