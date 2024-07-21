@@ -108,5 +108,6 @@ export 'package:task_app/features/user/domain/usecase/get_all_users_usecase.dart
 export 'package:task_app/features/user/domain/usecase/get_single_user_usecase.dart';
 export 'package:task_app/features/user/presentation/cubit/user_cubit.dart';
 export 'package:task_app/features/user/presentation/cubit/user_state.dart';
+export 'package:task_app/features/user/presentation/view/user_detail_page.dart';
 export 'package:task_app/features/user/presentation/view/user_view.dart';
 export 'package:task_app/main.dart';

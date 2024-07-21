@@ -138,4 +138,12 @@ class UserCubit extends Cubit<UserState> {
       ),
     );
   }
+
+  void selectUser({UserEntity? user}) {
+    emit(
+      state.copyWith(
+        selectedUser: () => user,
+      ),
+    );
+  }
 }

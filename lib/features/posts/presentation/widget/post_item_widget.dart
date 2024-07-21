@@ -21,7 +21,7 @@ class PostItemWidgets extends StatelessWidget {
       child: Column(
         children: [
           // User Info
-          _userInfo(),
+          _userInfo(context),
           SizedBox(
             height: 8.h,
           ),
@@ -147,43 +147,54 @@ class PostItemWidgets extends StatelessWidget {
     );
   }
 
-  _userInfo() {
-    return Row(
-      children: [
-        // User Avatar
-        Container(
-          width: 32.w,
-          height: 32.h,
-          decoration: BoxDecoration(
-            color: AppColors(inverseDarkMode: true).primaryContainer,
-            borderRadius: BorderRadius.circular(25.r),
-          ),
-          child: Center(
-            child: Text(
-              postWithUser.user?.username
-                      ?.substring(0, 1)
-                      .toTitleCase(nullValue: "U") ??
-                  'U',
-              style: AllTextStyle.f14W8.copyWith(
-                color: PrimitiveColors.grey1000,
+  _userInfo(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          AppRoutes.userDetailPageRoute,
+        );
+        BlocProvider.of<UserCubit>(context).selectUser(
+          user: postWithUser.user,
+        );
+      },
+      child: Row(
+        children: [
+          // User Avatar
+          Container(
+            width: 32.w,
+            height: 32.h,
+            decoration: BoxDecoration(
+              color: AppColors(inverseDarkMode: true).primaryContainer,
+              borderRadius: BorderRadius.circular(25.r),
+            ),
+            child: Center(
+              child: Text(
+                postWithUser.user?.username
+                        ?.substring(0, 1)
+                        .toTitleCase(nullValue: "U") ??
+                    'U',
+                style: AllTextStyle.f14W8.copyWith(
+                  color: PrimitiveColors.grey1000,
+                ),
               ),
             ),
           ),
-        ),
-        SizedBox(
-          width: 12.w,
-        ),
-        // User Name
-        Text(
-          postWithUser.user?.username.toTitleCase(
-                nullValue: 'N/A',
-              ) ??
-              '',
-          style: AllTextStyle.f12W4.copyWith(
-            color: PrimitiveColors.grey400,
+          SizedBox(
+            width: 12.w,
           ),
-        ),
-      ],
+          // User Name
+          Text(
+            postWithUser.user?.username.toTitleCase(
+                  nullValue: 'N/A',
+                ) ??
+                '',
+            style: AllTextStyle.f12W4.copyWith(
+              color: PrimitiveColors.grey400,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

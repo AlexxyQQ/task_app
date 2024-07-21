@@ -9,11 +9,17 @@ class AppRoutes {
   static const String allPostPageRoute = '/allPostPage';
   static const String postDetailPageRoute = '/postDetailPageRoute';
 
+  // User Routes
+  static const String userDetailPageRoute = '/userDetailPageRoute';
+
   // List of all routes
   static final Map<String, Widget Function(BuildContext)> routes = {
     initialRoute: (context) => const SplashView(),
+    // Post Routes
     allPostPageRoute: (context) => const PostsView(),
     postDetailPageRoute: (context) => const PostDetailPage(),
+    // User Routes
+    userDetailPageRoute: (context) => const UserDetailPage(),
   };
 
   // onGenerateRoute
